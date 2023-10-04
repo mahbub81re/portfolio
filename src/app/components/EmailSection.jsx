@@ -14,11 +14,22 @@ import { sendEmail } from "../actions/mailaction";
 const EmailSection = () => {
  const [formData , setFormData] = useState(initialFormData);
  const {subject, email, message}= formData;
+ const [lodding , setLoading] = useState(false);
  
  async function sendEmailHandle(){
+  setLoading(true);
   const data= await sendEmail(formData)
-console.log(data)
-
+   if(data.success){
+    setLoading(false);
+    setFormData({subject:"",
+      email:"",
+      message:""});
+    alert("Massage have been sent");
+   }else{
+    setLoading(false);
+   alert("Massage have been not  sent");
+   }
+   
  }
   return (
     <section
@@ -117,7 +128,7 @@ console.log(data)
             className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
             onClick={(e)=>sendEmailHandle(e)}
            >
-            Send Message
+           {lodding?"Loading...":"Send Message"} 
           </button>
         </div>
       </div>
